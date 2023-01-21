@@ -8,6 +8,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 
 
@@ -23,6 +29,26 @@ public class Robot extends TimedRobot
     
     private RobotContainer robotContainer;
 
+
+        private static final String kDefaultAuto = "Default";
+
+        private static final String kCustomAuto = "My Auto";
+
+        private String m_autoSelected;
+
+        private final SendableChooser m_chooser = new SendableChooser<>();
+
+        private DutyCycleEncoder throughBore;
+
+        private double ticks;
+
+        private double freq;
+
+        private boolean isConn;
+
+        private DigitalInput limit;
+
+        private Boolean limitGet;
     /**
      * This method is run when the robot is first started up and should be used for any
      * initialization code.
@@ -33,6 +59,18 @@ public class Robot extends TimedRobot
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
+
+        m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+
+        m_chooser.addOption("My Auto", kCustomAuto);
+
+        SmartDashboard.putData("Auto choices", m_chooser);
+
+        throughBore = new DutyCycleEncoder(9);
+
+        throughBore.setConnectedFrequencyThreshold(900);
+
+        limit = new DigitalInput(0);
     }
     
     
@@ -51,6 +89,22 @@ public class Robot extends TimedRobot
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+
+        ticks = throughBore.get();
+
+        freq = throughBore.getFrequency();
+
+        isConn = throughBore.isConnected();
+
+        limitGet = limit.get();
+
+        SmartDashboard.putNumber("Encoder value", ticks);
+
+        SmartDashboard.putNumber("Encoder frequency", freq);
+
+        SmartDashboard.putBoolean("Encoder is connected", isConn);
+
+        SmartDashboard.putBoolean("Limit is pressed", limitGet);
     }
     
     

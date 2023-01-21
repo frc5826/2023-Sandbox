@@ -9,7 +9,7 @@ public class OutputSubsystem extends SubsystemBase {
     private TalonSRX talon;
 
     public OutputSubsystem(){
-        this.talon = new TalonSRX(7);
+        this.talon = new TalonSRX(9);
     }
 
     public TalonSRX getTalon() {
@@ -18,5 +18,9 @@ public class OutputSubsystem extends SubsystemBase {
 
     public void setSpeed(double speed){
         talon.set(TalonSRXControlMode.PercentOutput, speed);
+    }
+
+    public double getPosition() {
+        return talon.getSelectedSensorPosition();
     }
 }
