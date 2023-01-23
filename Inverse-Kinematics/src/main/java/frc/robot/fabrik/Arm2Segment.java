@@ -8,6 +8,8 @@ public class Arm2Segment {
     private Point[] points = new Point[3];
     private Point goal;
 
+    private final Point armOriginPoint;
+
     private double errorMargin;
 
     public Arm2Segment(double[] armLengths, double errorMargin){
@@ -18,6 +20,7 @@ public class Arm2Segment {
         findPointsFromEncoders();
 
         goal = new Point();
+        armOriginPoint = new Point();
 
         this.errorMargin = errorMargin;
     }
@@ -50,13 +53,33 @@ public class Arm2Segment {
             //FORWARD
 
             pointsPrime[2] = goal;
+            pointsPrime[1] = getNextPrime(pointsPrime[2], points[1], armLengths[1]);
+            pointsPrime[0] = getNextPrime(pointsPrime[1], points[0], armLengths[0]);
+
+            points[0] = pointsPrime[0];
+            points[1] = pointsPrime[1];
+            points[2] = pointsPrime[2];
+
+            //BACKWARD
+
+            pointsPrime[0] = armOriginPoint;
+            pointsPrime[1] = getNextPrime(pointsPrime[0], points[1], armLengths[0]);
+            pointsPrime[2] = getNextPrime(pointsPrime[1], points[2], armLengths[1]);
+
+            points[0] = pointsPrime[0];
+            points[1] = pointsPrime[1];
+            points[2] = pointsPrime[2];
 
         }
     }
 
-    public Point getNextPrime(Point origin, Point cast){
-        //TODO do the vector thing to find the next prime point
-        return new Point();
+    public Point getNextPrime(Point origin, Point cast, double segLength){
+
+        Vector vector = new Vector(origin, cast);
+        vector.setLength(segLength);
+
+        return vector.getTerminal();
+
     }
 
 }
