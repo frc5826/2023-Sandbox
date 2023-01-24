@@ -31,6 +31,15 @@ public class Vector {
         terminal.setCoords(terminal.getXRelative(initial) * getLength() + initial.getX(), terminal.getYRelative(initial) * getLength() + initial.getY());
     }
 
+    public double getMagnitude(){
+        return Math.sqrt(Math.pow(terminal.getXRelative(initial), 2) + Math.pow(terminal.getYRelative(initial), 2));
+    }
+
+    public double getAngleBetweenOther(Vector other){
+        //TODO finish
+        return 0.0;
+    }
+
     public Point getTerminal(){
         return terminal;
     }
