@@ -31,7 +31,7 @@ public class Arm2Segment {
     }
 
     public void setGoal(Point goal){
-        this.goal = goal;
+        this.goal.setCoords(goal);
     }
 
     public boolean outOfMargin(){
@@ -48,27 +48,27 @@ public class Arm2Segment {
             pointsPrime[x] = new Point();
         }
 
-        while(outOfMargin() && i < 10){
+        while(outOfMargin() && i < 100){
 
             //FORWARD
 
             pointsPrime[2].setCoords(goal);
-            pointsPrime[1] = getNextPrime(pointsPrime[2], points[1], armLengths[1]);
-            pointsPrime[0] = getNextPrime(pointsPrime[1], points[0], armLengths[0]);
+            pointsPrime[1].setCoords(getNextPrime(pointsPrime[2], points[1], armLengths[1]));
+            pointsPrime[0].setCoords(getNextPrime(pointsPrime[1], points[0], armLengths[0]));
 
-            points[0] = pointsPrime[0];
-            points[1] = pointsPrime[1];
-            points[2] = pointsPrime[2];
+            points[0].setCoords(pointsPrime[0]);
+            points[1].setCoords(pointsPrime[1]);
+            points[2].setCoords(pointsPrime[2]);
 
             //BACKWARD
 
             pointsPrime[0].setCoords(armOriginPoint);
-            pointsPrime[1] = getNextPrime(pointsPrime[0], points[1], armLengths[0]);
-            pointsPrime[2] = getNextPrime(pointsPrime[1], points[2], armLengths[1]);
+            pointsPrime[1].setCoords(getNextPrime(pointsPrime[0], points[1], armLengths[0]));
+            pointsPrime[2].setCoords(getNextPrime(pointsPrime[1], points[2], armLengths[1]));
 
-            points[0] = pointsPrime[0];
-            points[1] = pointsPrime[1];
-            points[2] = pointsPrime[2];
+            points[0].setCoords(pointsPrime[0]);
+            points[1].setCoords(pointsPrime[1]);
+            points[2].setCoords(pointsPrime[2]);
 
             i++;
         }
@@ -86,9 +86,9 @@ public class Arm2Segment {
         return new Vector(points[segNumber + 1], points[segNumber]);
     }
 
-    private Point getNextPrime(Point origin, Point cast, double segLength){
+    public Point getNextPrime(Point origin, Point cast, double segLength){
 
-        Vector vector = new Vector(origin, cast);
+        Vector vector = new Vector(cast, origin);
         vector.setLength(segLength);
 
         return vector.getTerminal();

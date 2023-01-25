@@ -22,13 +22,9 @@ public class Vector {
         terminal.setCoordsRelative(initial, difX / length, difY / length);
     }
 
-    public double getLength(){
-        return Math.sqrt( Math.pow(terminal.getX() - initial.getX(), 2) + Math.pow(terminal.getY() - initial.getY(), 2) );
-    }
-
     public void setLength(double length){
         normalize();
-        terminal.setCoords(terminal.getXRelative(initial) * getLength() + initial.getX(), terminal.getYRelative(initial) * getLength() + initial.getY());
+        terminal.setCoords(terminal.getXRelative(initial) * length + initial.getX(), terminal.getYRelative(initial) * length + initial.getY());
     }
 
     public double getMagnitude(){
