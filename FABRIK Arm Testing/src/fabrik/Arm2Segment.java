@@ -1,6 +1,4 @@
-package frc.robot.fabrik;
-
-import frc.robot.Constants;
+package fabrik;
 
 public class Arm2Segment {
 
@@ -95,6 +93,10 @@ public class Arm2Segment {
 
         return vector.getTerminal();
 
+    }
+
+    public Point getPointInArm(int point){
+        return points[point];
     }
 
 }
