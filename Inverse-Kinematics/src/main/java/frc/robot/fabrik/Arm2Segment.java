@@ -73,7 +73,19 @@ public class Arm2Segment {
         }
     }
 
-    public Point getNextPrime(Point origin, Point cast, double segLength){
+    public double getArmMiddleAngle(){
+        return armSegToVector(0).getAngleBetweenOther(armSegToVector(1));
+    }
+
+    public double getArmBaseAngle(){
+        return armSegToVector(0).getAngleBetweenOther(new Vector(new Point(1, 0), new Point()));
+    }
+
+    private Vector armSegToVector(int segNumber){
+        return new Vector(points[segNumber + 1], points[segNumber]);
+    }
+
+    private Point getNextPrime(Point origin, Point cast, double segLength){
 
         Vector vector = new Vector(origin, cast);
         vector.setLength(segLength);

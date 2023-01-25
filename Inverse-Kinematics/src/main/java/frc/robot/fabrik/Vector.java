@@ -36,8 +36,7 @@ public class Vector {
     }
 
     public double getAngleBetweenOther(Vector other){
-        //TODO finish
-        return 0.0;
+        return Math.acos((this.getRelative().getX() * other.getRelative().getX() + this.getRelative().getY() + other.getRelative().getY()) / (this.getMagnitude() * other.getMagnitude()));
     }
 
     public Point getTerminal(){
@@ -46,6 +45,14 @@ public class Vector {
 
     public Point getInitial(){
         return initial;
+    }
+
+    public Point getRelative(){
+        return new Point(terminal.getXRelative(initial), terminal.getYRelative(initial));
+    }
+
+    public Vector moveToOrigin(){
+        return new Vector(this.getRelative(), new Point());
     }
 
 }
