@@ -7,11 +7,11 @@ import static org.junit.Assert.*;
 public class Main {
     @Test
     public void testArm() {
-        double[] armLengths = {6, 6};
-        Arm2Segment arm = new Arm2Segment(armLengths, 0.01);
+        double[] armSegs = {1, 1};
+        Arm2Segment arm = new Arm2Segment(armSegs, 0.1);
         arm.setGoal(new Point(1, 1));
         arm.fabrik();
 
-        assertEquals(1, Math.round(arm.getPointInArm(2).getX()), 0);
+        assertEquals(Math.PI/2, arm.getArmMiddleAngle(), 0.1);
     }
 }

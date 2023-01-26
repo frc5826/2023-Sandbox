@@ -1,10 +1,14 @@
 package fabrik;
 
+import java.util.Arrays;
+
 public class Arm2Segment {
 
     private double[] armLengths;
     private Point[] points = new Point[3];
     private Point goal;
+
+    private double maxReach;
 
     private final Point armOriginPoint;
 
@@ -21,6 +25,8 @@ public class Arm2Segment {
         armOriginPoint = new Point();
 
         this.errorMargin = errorMargin;
+
+        maxReach = Arrays.stream(armLengths).sum();
     }
 
     public void findPointsFromEncoders(){
@@ -38,6 +44,10 @@ public class Arm2Segment {
         return Math.sqrt(Math.pow((goal.getX()-points[2].getX()),2) + Math.pow((goal.getY()-points[2].getY()),2)) > errorMargin;
     }
 
+    public boolean goalIsReachable(){
+        return new Vector(goal, new Point()).getMagnitude() <= maxReach;
+    }
+
     public void fabrik(){
 
         int i = 0;
@@ -48,29 +58,43 @@ public class Arm2Segment {
             pointsPrime[x] = new Point();
         }
 
-        while(outOfMargin() && i < 100){
+        if(goalIsReachable()) {
+            while (outOfMargin() && i < 100) {
 
-            //FORWARD
+                //FORWARD
 
-            pointsPrime[2].setCoords(goal);
-            pointsPrime[1].setCoords(getNextPrime(pointsPrime[2], points[1], armLengths[1]));
-            pointsPrime[0].setCoords(getNextPrime(pointsPrime[1], points[0], armLengths[0]));
+                pointsPrime[2].setCoords(goal);
+                pointsPrime[1].setCoords(getNextPrime(pointsPrime[2], points[1], armLengths[1]));
+                pointsPrime[0].setCoords(getNextPrime(pointsPrime[1], points[0], armLengths[0]));
 
-            points[0].setCoords(pointsPrime[0]);
-            points[1].setCoords(pointsPrime[1]);
-            points[2].setCoords(pointsPrime[2]);
+                points[0].setCoords(pointsPrime[0]);
+                points[1].setCoords(pointsPrime[1]);
+                points[2].setCoords(pointsPrime[2]);
 
-            //BACKWARD
+                //BACKWARD
 
-            pointsPrime[0].setCoords(armOriginPoint);
-            pointsPrime[1].setCoords(getNextPrime(pointsPrime[0], points[1], armLengths[0]));
-            pointsPrime[2].setCoords(getNextPrime(pointsPrime[1], points[2], armLengths[1]));
+                pointsPrime[0].setCoords(armOriginPoint);
+                pointsPrime[1].setCoords(getNextPrime(pointsPrime[0], points[1], armLengths[0]));
+                pointsPrime[2].setCoords(getNextPrime(pointsPrime[1], points[2], armLengths[1]));
 
-            points[0].setCoords(pointsPrime[0]);
-            points[1].setCoords(pointsPrime[1]);
-            points[2].setCoords(pointsPrime[2]);
+                points[0].setCoords(pointsPrime[0]);
+                points[1].setCoords(pointsPrime[1]);
+                points[2].setCoords(pointsPrime[2]);
 
-            i++;
+                i++;
+            }
+        }
+        else{
+
+            Vector vector = new Vector(goal, armOriginPoint);
+
+            points[0].setCoords(armOriginPoint);
+            vector.setLength(armLengths[0]);
+            points[1].setCoords(vector.getTerminal());
+            vector.setLength(armLengths[1] + vector.getMagnitude());
+            points[2].setCoords(vector.getTerminal());
+
+
         }
     }
 
@@ -99,4 +123,7 @@ public class Arm2Segment {
         return points[point];
     }
 
+    public double getMaxReach() {
+        return maxReach;
+    }
 }
