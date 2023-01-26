@@ -9,23 +9,15 @@ public class Arm {
 
     private Vector distance_c;
 
-    public Arm(double armseg1, double armseg2){
+    public Arm(double armseg1, double armseg2, Point goal, Point origin){
         this.armseg1 = armseg1;
         this.armseg2 = armseg2;
 
+        this.goal = goal;
+        this.origin = origin;
 
         goal = new Point();
         origin = new Point();
-
-    }
-
-    public void setGoal(Point goal){
-        this.goal = goal;
-
-    }
-
-    public void setOrigin(Point origin) {
-        this.origin = origin;
 
     }
 
@@ -43,7 +35,7 @@ public class Arm {
 
     public double calculateBeta() {
 
-        return Math.acos(Math.pow(armseg2, 2)-(Math.pow(armseg1, 2) + Math.pow(calculateDistance(), 2))/((-2) * armseg1 * calculateDistance()));
+        return Math.acos((Math.pow(armseg2, 2)-(Math.pow(armseg1, 2) + Math.pow(calculateDistance(), 2)))/((-2) * armseg1 * calculateDistance()));
 
     }
 
@@ -55,7 +47,7 @@ public class Arm {
 
     public double calculateGamma() {
 
-        return Math.asin(calculateDistance() * (Math.sin(calculateBeta()/armseg2)));
+        return Math.asin((calculateDistance() * (Math.sin(calculateBeta())/armseg2)));
 
     }
 
