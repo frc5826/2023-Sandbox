@@ -1,4 +1,4 @@
-package frc.robot.fabrik;
+package fabrik;
 
 public class Arm2Segment {
 
