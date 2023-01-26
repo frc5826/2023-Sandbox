@@ -21,6 +21,12 @@ public class Arm {
 
     }
 
+    public double checkReach() {
+        double reach = armseg1 + armseg2;
+
+        return reach;
+    }
+
     public double calculateDistance() {
         distance_c = new Vector(origin, goal);
 
