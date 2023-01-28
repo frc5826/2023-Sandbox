@@ -2,6 +2,13 @@ package frc.robot.fabrik;
 
 import java.util.Arrays;
 
+enum MovDir{
+    UP,
+    DOWN,
+    FORWARD,
+    BACKWARD
+}
+
 public class Arm2Segment {
 
     private double[] armLengths;
@@ -9,6 +16,7 @@ public class Arm2Segment {
     private Point goal;
 
     private double maxReach;
+    private double minReach;
 
     private final Point armOriginPoint;
 
@@ -27,6 +35,7 @@ public class Arm2Segment {
         this.errorMargin = errorMargin;
 
         maxReach = Arrays.stream(armLengths).sum();
+        minReach = Math.abs(armLengths[2] - armLengths[1]);
     }
 
     public void findPointsFromEncoders(){
@@ -40,12 +49,19 @@ public class Arm2Segment {
         this.goal.setCoords(goal);
     }
 
+    public void moveGoal(double x, double y){
+        this.setGoal(new Point(
+                Math.max( Math.min(x + goal.getX(), maxReach), 0),
+                Math.max( Math.min(y + goal.getY(), maxReach), 0)
+        ));
+    }
+
     public boolean outOfMargin(){
         return Math.sqrt(Math.pow((goal.getX()-points[2].getX()),2) + Math.pow((goal.getY()-points[2].getY()),2)) > errorMargin;
     }
 
     public boolean goalIsReachable(){
-        return new Vector(goal, new Point()).getMagnitude() <= maxReach;
+        return minReach <= new Vector(goal, new Point()).getMagnitude() && new Vector(goal, new Point()).getMagnitude() <= maxReach;
     }
 
     public void fabrik(){

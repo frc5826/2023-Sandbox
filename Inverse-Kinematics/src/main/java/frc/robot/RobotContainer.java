@@ -8,6 +8,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.ArmMoveCommand;
+import frc.robot.subsystems.ArmSubsystem;
 
 
 /**
@@ -20,6 +22,8 @@ public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
 
+    ArmSubsystem armSubsystem = new ArmSubsystem();
+    ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
     
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -51,6 +55,6 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An ExampleCommand will run in autonomous
-        return null;
+        return armMoveCommand;
     }
 }
