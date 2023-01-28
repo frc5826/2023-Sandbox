@@ -5,50 +5,59 @@ public class Arm {
     private double armseg1, armseg2;
 
     private Point goal;
+
     private Point origin;
 
     private Vector distance_c;
 
-    public Arm(double armseg1, double armseg2, Point goal, Point origin){
+    public Arm(double armseg1, double armseg2, Point origin){
         this.armseg1 = armseg1;
         this.armseg2 = armseg2;
 
-        this.goal = goal;
         this.origin = origin;
 
-        goal = new Point();
-        origin = new Point();
+        goal = new Point(10,10);
 
     }
 
-    public double calculateDistance(Point goal, Point origin, Vector distance_c) {
+    public double calculateDistance() {
         distance_c = new Vector(origin, goal);
 
         return distance_c.getMagnitude();
 
     }
 
-    public double calculateAlpha(Point goal) {
+    public double calculateAlpha() {
 
         return Math.atan2(goal.getY(), goal.getX());
     }
 
-    public double calculateBeta(double armseg1, double armseg2) {
+    public double calculateBeta() {
 
-        return Math.acos((Math.pow(armseg2, 2)-(Math.pow(armseg1, 2) + Math.pow(distance_c.getMagnitude(), 2)))/(-2) * armseg1 * distance_c.getMagnitude());
+        return Math.acos((Math.pow(armseg2, 2)-(Math.pow(armseg1, 2) + Math.pow(calculateDistance(), 2)))/((-2) * armseg1 * calculateDistance()));
 
     }
 
     public double calculateTheta() {
 
-        return (calculateAlpha(goal) + calculateBeta(armseg1, armseg2));
+        return (calculateAlpha() + calculateBeta());
 
     }
 
-    public double calculateGamma(Vector distance_c, double armseg2) {
+    public double calculateGamma() {
 
-        return Math.asin(distance_c.getMagnitude() * (Math.sin(calculateBeta(armseg1, armseg2)/armseg2)));
+        return Math.asin(distance_c.getMagnitude() * (Math.sin(calculateBeta()/armseg2)));
 
+    }
+
+    public double returnMaxRange() {
+
+        return armseg1 + armseg2;
+    }
+
+    public double returnMinRange() {
+
+        return armseg2 - armseg1;
     }
 
 }

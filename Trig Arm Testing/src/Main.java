@@ -5,7 +5,7 @@ import static java.lang.Float.NaN;
 public class Main {
     public static void main(String[] args) {
 
-        Point goal = new Point(10, 0);
+        Point goal = new Point(3, 4);
         Point origin = new Point(0,0);
 
         Arm arm = new Arm(5,5, goal, origin);

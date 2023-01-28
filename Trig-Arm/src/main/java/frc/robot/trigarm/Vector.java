@@ -6,9 +6,6 @@ public class Vector {
 
     public Vector(Point initial, Point terminal) {
 
-        initial = new Point();
-        terminal = new Point();
-
         this.initial = initial;
         this.terminal = terminal;
 
