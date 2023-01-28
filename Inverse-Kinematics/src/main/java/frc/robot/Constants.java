@@ -17,7 +17,11 @@ import frc.robot.fabrik.Point;
  */
 public final class Constants {
 
-    public final double[] armLengths = {15.5, 11.5};
-    public final double maxError = 1;
+    public static final double[] armLengths = {42.5, 48};
+
+    public static final int baseArmEncoderID = 9;
+    public static final int middleArmEncoderID = 8;
+
+    public static final double maxError = 0.1;
 
 }
